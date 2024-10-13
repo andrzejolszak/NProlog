@@ -55,6 +55,18 @@ public class QueryResult
         this.variables = variables;
     }
 
+    public int SolutionsCount { get; private set; }
+
+    public int Exhaust()
+    {
+        while (!this.IsExhausted)
+        {
+            this.Next();
+        }
+
+        return this.SolutionsCount;
+    }
+
     /**
      * Attempts to evaluate the query this object represents.
      * <p>
@@ -85,6 +97,10 @@ public class QueryResult
         }
 
         hasFailed = !result;
+        if (result)
+        {
+            this.SolutionsCount++;
+        }
 
         return result;
     }

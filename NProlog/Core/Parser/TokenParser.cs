@@ -184,8 +184,8 @@ public class TokenParser
                     return CreateToken(sb,TokenType.ATOM);
                 }
             }
-            else if (IsEscapeSequencePrefix(c))
-                c = ParseEscapeSequence();
+            // else if (IsEscapeSequencePrefix(c))
+            //     c = ParseEscapeSequence();
             else if (IsEndOfStream(c))
                 throw NewParserException("No closing ' on quoted string");
             sb.Append((char)c);

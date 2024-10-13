@@ -70,6 +70,18 @@ public class Prolog
         => PrologSourceReader.ParseReader(knowledgeBase, reader);
 
     /**
+     * Populates this objects {@code KnowledgeBase} with clauses read from the specified {@code String}.
+     *
+     * @param reader source of the prolog syntax defining the clauses to add
+     * @throws PrologException if there is any problem parsing the syntax or adding the new clauses
+     */
+    public void ConsultString(string code)
+    {
+        using StringReader reader = new StringReader(code);
+        PrologSourceReader.ParseReader(knowledgeBase, reader);
+    }
+
+    /**
      * Populates this objects {@code KnowledgeBase} with clauses read from the specified resource.
      * <p>
      * If {@code prologSourceResourceName} refers to an existing file on the file system then that file is used as the

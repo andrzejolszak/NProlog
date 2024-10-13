@@ -31,9 +31,9 @@
 % compare
 ?- pl_add_predicate('='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.Equal').
 ?- pl_add_predicate('=='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.StrictEquality').
-?- pl_add_predicate('\\=='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NotStrictEquality').
+?- pl_add_predicate('\=='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NotStrictEquality').
 ?- pl_add_predicate('=:='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericEquality').
-?- pl_add_predicate('=\\='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericInequality').
+?- pl_add_predicate('=\='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericInequality').
 ?- pl_add_predicate('<'/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericLessThan').
 ?- pl_add_predicate('=<'/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericLessThanOrEqual').
 ?- pl_add_predicate('>'/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NumericGreaterThan').
@@ -42,7 +42,7 @@
 ?- pl_add_predicate('@>'/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.TermGreaterThan').
 ?- pl_add_predicate('@>='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.TermGreaterThanOrEqual').
 ?- pl_add_predicate('@=<'/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.TermLessThanOrEqual').
-?- pl_add_predicate('\\='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NotUnifiable').
+?- pl_add_predicate('\='/2, 'Org.NProlog.Core.Predicate.Builtin.Compare.NotUnifiable').
 ?- pl_add_predicate(compare/3, 'Org.NProlog.Core.Predicate.Builtin.Compare.Compare').
 ?- pl_add_predicate(predsort/3, 'Org.NProlog.Core.Predicate.Builtin.Compare.PredSort').
 ?- pl_add_predicate(between/3, 'Org.NProlog.Core.Predicate.Builtin.Compare.Between').
@@ -52,7 +52,7 @@
 % compound
 ?- pl_add_predicate(','/2, 'Org.NProlog.Core.Predicate.Builtin.Compound.Conjunction').
 ?- pl_add_predicate(';'/2, 'Org.NProlog.Core.Predicate.Builtin.Compound.Disjunction').
-?- pl_add_predicate('/'('\\+', 1), 'Org.NProlog.Core.Predicate.Builtin.Compound.Not').
+?- pl_add_predicate('/'('\+', 1), 'Org.NProlog.Core.Predicate.Builtin.Compound.Not').
 ?- pl_add_predicate(not/1, 'Org.NProlog.Core.Predicate.Builtin.Compound.Not').
 ?- pl_add_predicate(call/1, 'Org.NProlog.Core.Predicate.Builtin.Compound.Call').
 ?- pl_add_predicate(call/2, 'Org.NProlog.Core.Predicate.Builtin.Compound.Call').
@@ -125,8 +125,8 @@
 ?- pl_add_predicate(assertz/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Assert/AssertZ').
 ?- pl_add_predicate(assert/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Assert/AssertZ').
 ?- pl_add_predicate(listing/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Listing').
-?- pl_add_predicate(clause/2, 'Org.NProlog.Core.Predicate.Builtin.Kb.Inspect/inspectClause').
-?- pl_add_predicate(retract/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Inspect/retract').
+?- pl_add_predicate(clause/2, 'Org.NProlog.Core.Predicate.Builtin.Kb.Inspect/InspectClause').
+?- pl_add_predicate(retract/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Inspect/Retract').
 ?- pl_add_predicate(retractall/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.RetractAll').
 ?- pl_add_predicate(consult/1, 'Org.NProlog.Core.Predicate.Builtin.Kb.Consult').
 ?- pl_add_predicate('.'/2, 'Org.NProlog.Core.Predicate.Builtin.Kb.ConsultList').
@@ -207,14 +207,14 @@
 ?- pl_add_predicate('#=<'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.NumericConstraintPredicate/LessThanOrEqualTo').
 ?- pl_add_predicate('#>='/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.NumericConstraintPredicate/GreaterThanOrEqualTo').
 ?- pl_add_predicate('#='/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.NumericConstraintPredicate/EqualTo').
-?- pl_add_predicate('#\\='/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.NumericConstraintPredicate/NotEqualTo').
+?- pl_add_predicate('#\='/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.NumericConstraintPredicate/NotEqualTo').
 ?- pl_add_predicate('#<==>'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Equivalent').
 ?- pl_add_predicate('#==>'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/LeftImpliesRight').
 ?- pl_add_predicate('#<=='/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/RightImpliesLeft').
-?- pl_add_predicate('#/\\'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/And').
-?- pl_add_predicate('#\\/'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Or').
-?- pl_add_predicate('/'('#\\', 2), 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Xor').
-?- pl_add_predicate('/'('#\\', 1), 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Not').
+?- pl_add_predicate('#/\'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/And').
+?- pl_add_predicate('#\/'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Or').
+?- pl_add_predicate('/'('#\', 2), 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Xor').
+?- pl_add_predicate('/'('#\', 1), 'Org.NProlog.Core.Predicate.Builtin.Clp.BooleanConstraintPredicate/Not').
 ?- pl_add_predicate(pl_add_clp_expression/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.AddExpressionFactory').
 ?- pl_add_clp_expression('+'/2, 'Org.NProlog.Core.Predicate.Builtin.Clp.CommonExpression/Add').
 ?- pl_add_clp_expression('/'('-', 2), 'Org.NProlog.Core.Predicate.Builtin.Clp.CommonExpression/Subtract').
@@ -242,8 +242,8 @@
 ?- pl_add_arithmetic_operator(rem/2, 'Org.NProlog.Core.Math.Builtin.Remainder').
 ?- pl_add_arithmetic_operator(random/1, 'Org.NProlog.Core.Math.Builtin.Random').
 ?- pl_add_arithmetic_operator(integer/1, 'Org.NProlog.Core.Math.Builtin.Round').
-?- pl_add_arithmetic_operator('/\\'/2, 'Org.NProlog.Core.Math.Builtin.BitwiseAnd').
-?- pl_add_arithmetic_operator('\\/'/2, 'Org.NProlog.Core.Math.Builtin.BitwiseOr').
+?- pl_add_arithmetic_operator('/\'/2, 'Org.NProlog.Core.Math.Builtin.BitwiseAnd').
+?- pl_add_arithmetic_operator('\/'/2, 'Org.NProlog.Core.Math.Builtin.BitwiseOr').
 ?- pl_add_arithmetic_operator(xor/2, 'Org.NProlog.Core.Math.Builtin.BitwiseXor').
 ?- pl_add_arithmetic_operator('<<'/2, 'Org.NProlog.Core.Math.Builtin.ShiftLeft').
 ?- pl_add_arithmetic_operator('>>'/2, 'Org.NProlog.Core.Math.Builtin.ShiftRight').
@@ -263,11 +263,11 @@
 ?- op(1100, xfy, ';').
 ?- op(1050, xfy, '->').
 ?- op(1000, xfy, ',').
-?- op(900, fy, '\\+').
+?- op(900, fy, '\+').
 ?- op(700, xfx, '=').
 ?- op(700, xfx, '==').
 ?- op(700, xfx, '=:=').
-?- op(700, xfx, '=\\=').
+?- op(700, xfx, '=\=').
 ?- op(700, xfx, '=..').
 ?- op(700, xfx, '<').
 ?- op(700, xfx, '>').
@@ -277,13 +277,13 @@
 ?- op(700, xfx, '@=<').
 ?- op(700, xfx, '@>').
 ?- op(700, xfx, '@>=').
-?- op(700, xfx, '\\=').
-?- op(700, xfx, '\\==').
+?- op(700, xfx, '\=').
+?- op(700, xfx, '\==').
 ?- op(700, xfx, is).
 ?- op(700, xfx, in).
 ?- op(700, xfx, ins).
 ?- op(700, xfx, '#=').
-?- op(700, xfx, '#\\=').
+?- op(700, xfx, '#\=').
 ?- op(700, xfx, '#<').
 ?- op(700, xfx, '#>').
 ?- op(700, xfx, '#=<').
@@ -291,10 +291,10 @@
 ?- op(760, yfx, '#<==>').
 ?- op(750, xfy, '#==>').
 ?- op(750, xfy, '#<==').
-?- op(720, yfx, '#/\\').
-?- op(740, yfx, '#\\/').
-?- op(730, xfy, '#\\').
-?- op(710, fy, '#\\').
+?- op(720, yfx, '#/\').
+?- op(740, yfx, '#\/').
+?- op(730, xfy, '#\').
+?- op(710, fy, '#\').
 ?- op(600, xfy, '..').
 ?- op(600, xfy, ':').
 ?- op(500, yfx, '+').
@@ -305,8 +305,8 @@
 ?- op(400, yfx, '//').
 ?- op(400, yfx, mod).
 ?- op(400, yfx, rem).
-?- op(400, yfx, '/\\').
-?- op(400, yfx, '\\/').
+?- op(400, yfx, '/\').
+?- op(400, yfx, '\/').
 ?- op(400, yfx, xor).
 ?- op(400, yfx, '<<').
 ?- op(400, yfx, '>>').
