@@ -27,7 +27,7 @@ public static class ListFactory
     /**
      * A "{@code .}" is the functor name for all lists in Prolog.
      */
-    public const char LIST_PREDICATE_NAME = '.';
+    public const string LIST_PREDICATE_NAME = ".";
 
     /**
      * Returns a new {@link List} with specified head and tail.
