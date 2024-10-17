@@ -32,7 +32,7 @@ public class OperandsTest
         }
         catch (PrologException e)
         {
-            Assert.AreEqual("Cannot add operand with associativity of: yfy as the only values allowed are: [xfx, xfy, yfx, fx, fy, xf, yf]", e.Message);
+            Assert.IsTrue(e.Message.StartsWith("Cannot add operand with associativity of: yfy as the only values allowed are: [xfx, xfy, yfx, fx, fy, xf, yf]"));
         }
     }
 

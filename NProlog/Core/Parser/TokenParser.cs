@@ -406,9 +406,8 @@ public class TokenParser
     private static bool IsValidForAtom(int c)
         => char.IsLetterOrDigit((char)c) || IsUnderscore(c);
 
-    //NOTICE: by Yilin, add '@' prefix to ensure Unicode variables which are not upper case letters.
     private static bool IsVariable(int c)
-    => char.IsUpper((char)c) || IsUnderscore(c) || c is '@';
+    => char.IsUpper((char)c) || IsUnderscore(c);
 
     private static bool IsUnderscore(int c)
         => c == '_';

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+using Org.NProlog.Api;
 using Org.NProlog.Core.Event;
 using static Org.NProlog.Core.Event.SpyPoints;
 
@@ -69,7 +70,7 @@ public class PrologTest
     [TestMethod]
     public void PredicateWithManyClauses()
     {
-        var source = ("target/predicateTooLargeToCompileToJava.pl");
+        var source = ("predicateTooLargeToCompileToJava.pl");
         int numClauses = 2000;
         using (var pw = new StreamWriter(source))
         {
@@ -85,21 +86,14 @@ public class PrologTest
         }
 
         List<string> events = new();
-        //var listener = new PL(events);
-
-        // assert tests pass
-        //assertSuccess(source, new PrologTestRunnerConfig()
-        //{
-        // public Prolog createProlog()
-        //{
-        //    return new Prolog(listener);
-        //}
-        //});
+        var listener = new PL(events);
+        Prolog p = new Prolog(listener);
+        p.ConsultFile(source);
 
         // assert that notifications
         Assert.AreEqual(2, events.Count, events.ToString());
-        Assert.AreEqual("Reading prolog source in: prolog-bootstrap.pl from classpath", events[0]);
-        Assert.AreEqual("Reading prolog source in: target" + Environment.NewLine + "predicateTooLargeToCompileToJava.pl from file system", events[(1)]);
+        Assert.AreEqual("Reading prolog source in: Resources\\prolog-bootstrap.pl from file system", events[0]);
+        Assert.AreEqual("Reading prolog source in: predicateTooLargeToCompileToJava.pl from file system", events[1]);
     }
 
     private static void AssertSuccess(string _)
@@ -115,12 +109,12 @@ public class PrologTest
         //});
     }
 
-    //private void assertSuccess(string scriptsDir, PrologTestRunnerConfig prologSupplier)
-    //{
-    //    TestResults results = PrologTestRunner.runTests(scriptsDir, prologSupplier);
-    //    Console.WriteLine(results.getSummary());
-    //    results.assertSuccess();
-    //}
+    // private void AssertSuccess(string scriptsDir, PrologTestRunnerConfig prologSupplier)
+    // {
+    //     TestResults results = PrologTestRunner.runTests(scriptsDir, prologSupplier);
+    //     Console.WriteLine(results.getSummary());
+    //     results.assertSuccess();
+    // }
 
     private static void Extract(string outputDir, string packageName)
     {

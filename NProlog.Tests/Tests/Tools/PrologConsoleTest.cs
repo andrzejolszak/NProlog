@@ -93,7 +93,7 @@ public class PrologConsoleTest : TestUtils
     {
         var tempFile = CreateFileToConsult("test(a).", "test(b).", "test(c).");
         var path = tempFile;
-        var input = CreateInput("consult('" + path.Replace("\\", "\\\\") + "').", "trace.", "test(X).", ";", ";");
+        var input = CreateInput("consult('" + path + "').", "trace.", "test(X).", ";", ";");
         var expected = CreateExpectedOutput(PROMPT + "INFO Reading prolog source in: " + path + " from file system", "", YES, "", PROMPT, YES, "",
                     PROMPT + "[THREAD-ID] CALL test(X)", "[THREAD-ID] EXIT test(a)", "", "X = a", "", YES + "[THREAD-ID] REDO test(a)", "[THREAD-ID] EXIT test(b)", "", "X = b", "",
                     YES + "[THREAD-ID] REDO test(b)", "[THREAD-ID] EXIT test(c)", "", "X = c", "", YES);
@@ -149,10 +149,8 @@ public class PrologConsoleTest : TestUtils
         var result = new StringBuilder();
         foreach (string line in lines)
         {
-            result.Append(line);
-            result.Append(LineSeparator);
+            result.AppendLine(line);
         }
         return result.ToString();
     }
-    private readonly static string LineSeparator = Environment.NewLine;
 }

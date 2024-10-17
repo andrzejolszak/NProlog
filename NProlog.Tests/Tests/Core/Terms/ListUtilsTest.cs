@@ -172,12 +172,12 @@ public class ListUtilsTest : TestUtils
     [TestMethod]
     public void TestToJavaUtilListNonListArguments()
     {
-        Assert.IsNull(ListUtils.ToList(Variable()));
-        Assert.IsNull(ListUtils.ToList(Atom()));
-        Assert.IsNull(ListUtils.ToList(Structure()));
-        Assert.IsNull(ListUtils.ToList(IntegerNumber()));
-        Assert.IsNull(ListUtils.ToList(DecimalFraction()));
-        Assert.IsNull(ListUtils.ToList(new Variable()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(Variable()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(Atom()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(Structure()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(IntegerNumber()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(DecimalFraction()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToList(new Variable()));
     }
 
     [TestMethod]
@@ -209,12 +209,12 @@ public class ListUtilsTest : TestUtils
     [TestMethod]
     public void TestToSortedJavaUtilListEmptyListNonListArguments()
     {
-        Assert.IsNull(ListUtils.ToSortedList(Variable()));
-        Assert.IsNull(ListUtils.ToSortedList(Atom()));
-        Assert.IsNull(ListUtils.ToSortedList(Structure()));
-        Assert.IsNull(ListUtils.ToSortedList(IntegerNumber()));
-        Assert.IsNull(ListUtils.ToSortedList(DecimalFraction()));
-        Assert.IsNull(ListUtils.ToSortedList(new Variable()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(Variable()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(Atom()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(Structure()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(IntegerNumber()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(DecimalFraction()));
+        Assert.ThrowsException<InvalidOperationException>(() => ListUtils.ToSortedList(new Variable()));
     }
 
     private static Term[] CreateArguments() 

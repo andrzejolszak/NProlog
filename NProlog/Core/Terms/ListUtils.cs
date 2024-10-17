@@ -52,18 +52,14 @@ public static class ListUtils
             }
             else
             {
-                //NOTICE: by Yilin
-                // partial list
-                return new();
+                return null;
             }
         }
         else if (list.Type == TermType.EMPTY_LIST)
             return new();
         else
         {
-            // not a list
-            // TODO consider throwing exception here rather than returning null
-            return null;
+            throw new InvalidOperationException("Not a list: " + list.Type);
         }
     }
 

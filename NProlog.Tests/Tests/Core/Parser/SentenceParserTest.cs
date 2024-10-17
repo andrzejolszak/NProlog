@@ -289,9 +289,9 @@ public class SentenceParserTest : TestUtils
 
         // following fails as '\+' prefix operand has higher precedence than '/' infix operand
         // Note that need to specify '\+' as '\\\\+' (escape slash once for Java string literal and once for Prolog parser)
-        Error("?- test('\\\\+'/1, 'abc').");
+        Error("?- test('\\+'/1, 'abc').");
         // following works as explicitly specifying '/' as the functor of a structure
-        Check("?- test('/'('\\\\+', 1), 'abc')", "?-(test(/(\\+, 1), abc))");
+        Check("?- test('/'('\\+', 1), 'abc')", "?-(test(/(\\+, 1), abc))");
 
         Error("p(a :- b).");
         Check("p(:-(a, b))", "p(:-(a, b))");
