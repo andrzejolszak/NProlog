@@ -250,6 +250,8 @@
 ?- pl_add_arithmetic_operator(max/2, 'Org.NProlog.Core.Math.Builtin.Max').
 ?- pl_add_arithmetic_operator(min/2, 'Org.NProlog.Core.Math.Builtin.Min').
 ?- pl_add_arithmetic_operator(abs/1, 'Org.NProlog.Core.Math.Builtin.Abs').
+?- pl_add_arithmetic_operator(float/1, 'Org.NProlog.Core.Math.Builtin.Float').
+?- pl_add_arithmetic_operator(floor/1, 'Org.NProlog.Core.Math.Builtin.Floor').
 
 % definite clause grammers (DCG)
 ?- op(1200, xfx, '-->').

@@ -76,6 +76,14 @@
         [DataRow("F: (fail; fail), true")]
         [DataRow("T: X=2, (Y=3 ; Y=2), X=Y")]
         [DataRow("F: X=2, (Y=3 ; Y=1), X=Y")]
+        [DataRow("T: true, (true ; false)")]
+        [DataRow("T: true, (false ; true)")]
+        [DataRow("F: false, (false ; true)")]
+        [DataRow("F: false, (true ; false)")]
+        [DataRow("T: true, true ; false")]
+        [DataRow("T: true, false ; true")]
+        [DataRow("T: false, false ; true")]
+        [DataRow("F: false, true ; false")]
         public void or(string test)
         {
             test.Evaluate();

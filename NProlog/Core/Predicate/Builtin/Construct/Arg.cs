@@ -46,11 +46,28 @@ public class Arg : AbstractSingleResultPredicate
 
     protected override bool Evaluate(Term arg1, Term arg2, Term arg3)
     {
-        var argIdx = TermUtils.ToInt(arg1);
-        if (arg2.NumberOfArguments < argIdx || argIdx < 1)
-            return false;
+        if (arg1.Type == TermType.VARIABLE)
+        {
+            for (int i = 0; i < arg2.NumberOfArguments; i++)
+            {
+                var t = arg2.GetArgument(i);
+                if (t.Type != TermType.VARIABLE && arg3.Unify(t))
+                {
+                    arg1.Unify(IntegerNumberCache.ValueOf(i + 1));
+                    return true;
+                }
+            }
 
-        var t = arg2.GetArgument(argIdx - 1);
-        return arg3.Unify(t);
+            return false;
+        }
+        else
+        {
+            var argIdx = TermUtils.ToInt(arg1);
+            if (arg2.NumberOfArguments < argIdx || argIdx < 1)
+                return false;
+
+            var t = arg2.GetArgument(argIdx - 1);
+            return arg3.Unify(t);
+        }
     }
 }

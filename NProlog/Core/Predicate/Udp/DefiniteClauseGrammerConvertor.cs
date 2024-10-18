@@ -16,6 +16,7 @@
 using Org.NProlog.Core.Exceptions;
 using Org.NProlog.Core.Kb;
 using Org.NProlog.Core.Terms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Org.NProlog.Core.Predicate.Udp;
 
@@ -32,8 +33,10 @@ public class DefiniteClauseGrammerConvertor
     /**
      * @param dcgTerm predicate with name "-=>" and two arguments
      */
-    public static Term Convert(Term dcgTerm)
+    public static Term Convert(Term dcgTerm, string prefix = "A", List<Variable> vars = null)
     {
+        vars ??= new List<Variable>();
+
         if (IsDCG(dcgTerm) == false)
         {
             throw new PrologException("Expected two argument predicate named \"-->\" but got: " + dcgTerm);
@@ -45,14 +48,16 @@ public class DefiniteClauseGrammerConvertor
         var antecedents = KnowledgeBaseUtils.ToArrayOfConjunctions(antecedent);
 
         return HasSingleListWithSingleAtomElement(antecedents)
-            ? convertSingleListTermAntecedent(consequent, antecedents[0])
-            : ConvertConjunctionOfAtomsAntecedent(consequent, antecedents);
+            ? convertSingleListTermAntecedent(consequent, antecedents[0], prefix, vars)
+            : ConvertConjunctionOfAtomsAntecedent(consequent, antecedents, prefix, vars);
     }
 
-    private static Term convertSingleListTermAntecedent(Term consequent, Term antecedent)
+    private static Term convertSingleListTermAntecedent(Term consequent, Term antecedent, string prefix, List<Variable> vars)
     {
         var consequentName = consequent.Name;
-        var variable = new Variable("A");
+        var variable = new Variable(prefix + vars.Count);
+        vars.Add(variable);
+
         var list = ListFactory.CreateList(antecedent.GetArgument(0), variable);
         var args = new Term[consequent.NumberOfArguments + 2];
         for (int i = 0; i < consequent.NumberOfArguments; i++)
@@ -65,13 +70,13 @@ public class DefiniteClauseGrammerConvertor
     }
 
     // TODO this method is too long - refactor
-    private static Term ConvertConjunctionOfAtomsAntecedent(Term consequent, Term[] conjunctionOfAtoms)
+    private static Term ConvertConjunctionOfAtomsAntecedent(Term consequent, Term[] conjunctionOfAtoms, string prefix, List<Variable> vars)
     {
         List<Term> newSequence = new();
 
-        var lastArg = new Variable("A0");
+        var lastArg = new Variable(prefix + vars.Count);
+        vars.Add(lastArg);
 
-        int varctr = 1;
         Term previous = lastArg;
         Term? previousList = null;
         for (int i = conjunctionOfAtoms.Length - 1; i > -1; i--)
@@ -92,16 +97,17 @@ public class DefiniteClauseGrammerConvertor
             {
                 if (previousList != null)
                 {
-                    var _next = new Variable("A" + (varctr++));
+                    var _next = new Variable(prefix + vars.Count);
+                    vars.Add(_next);
+
                     var _newAntecedentArg = Structure.CreateStructure("=", new Term[] { _next, AppendToEndOfList(previousList, previous) });
                     newSequence.Insert(0, _newAntecedentArg);
                     previousList = null;
                     previous = _next;
                 }
 
-                var next = new Variable("A" + (varctr++));
-                var newAntecedentArg = CreateNewPredicate(term, next, previous);
-                previous = next;
+                var newAntecedentArg = CreateNewPredicate(term, previous, vars);
+                previous = vars[vars.Count - 1];
                 newSequence.Insert(0, newAntecedentArg);
             }
         }
@@ -120,7 +126,8 @@ public class DefiniteClauseGrammerConvertor
 
         if (previousList != null)
             previous = AppendToEndOfList(previousList, previous);
-        var newConsequent = CreateNewPredicate(consequent, previous, lastArg);
+
+        var newConsequent = CreateNewPredicate(consequent, lastArg, vars, previous);
 
         return newAntecedent == null
             ? newConsequent
@@ -138,15 +145,39 @@ public class DefiniteClauseGrammerConvertor
         return ListFactory.CreateList(terms.ToArray(), newTail);
     }
 
-    private static Term CreateNewPredicate(Term original, Term previous, Term next)
+    private static Term CreateNewPredicate(Term original, Term nMinusOneVar, List<Variable> vars, Term nextVar = null)
     {
+        if (original.Name == ";" && original.Args.Length == 2)
+        {
+            // return Structure.CreateStructure(original.Name, new Term[] { CreateNewPredicate(original.Args[0], previousVar, nextVar), CreateNewPredicate(original.Args[1], previousVar, nextVar) });
+            List<Variable> vars2 = vars;
+            Term first = Convert(Structure.CreateStructure("-->", new[] { new Atom("__a"), original.Args[0] }), vars: vars2);
+            Term second = Convert(Structure.CreateStructure("-->", new[] { new Atom("__b"), original.Args[1] }), vars: vars2);
+            return Structure.CreateStructure(original.Name, new Term[]
+            {
+                first.Name == ":-" ?  first.Args[1] : first.Args[0],
+                second.Name == ":-" ?  second.Args[1] : second.Args[0]
+            });
+        }
+
         var args = new Term[original.NumberOfArguments + 2];
         for (int a = 0; a < original.NumberOfArguments; a++)
         {
             args[a] = original.GetArgument(a);
         }
-        args[original.NumberOfArguments] = previous;
-        args[original.NumberOfArguments + 1] = next;
+
+        if (nextVar is null)
+        {
+            var next = new Variable("A" + vars.Count);
+            vars.Add(next);
+            args[original.NumberOfArguments] = next;
+        }
+        else
+        {
+            args[original.NumberOfArguments] = nextVar;
+        }
+
+        args[original.NumberOfArguments + 1] = nMinusOneVar;
         return Structure.CreateStructure(original.Name, args);
     }
 

@@ -42,10 +42,34 @@ public class DefiniteClauseGrammerConvertorTest
     public void TestTwoAtomAntecedent() => PerformConversion("a --> b, c.", "a(A2, A0) :- b(A2, A1) , c(A1, A0)");
 
     [TestMethod]
+    public void TestTwoAtomAntecedent2() => PerformConversion("a --> b ; c.", "a(A1, A0) :- b(A1, A0) ; c(A1, A0)");
+
+    [TestMethod]
+    public void TestTwoAtomAntecedent3() => PerformConversion("a --> a, b , c.", "a(A3, A0) :- a(A3, A2) , b(A2, A1) , c(A1, A0)");
+
+    [TestMethod]
+    public void TestTwoAtomAntecedent4() => PerformConversion("a --> a, b ; c.", "a(A2, A0) :- a(A2, A1) , b(A1, A0) ; c(A1, A0)");
+
+    [TestMethod]
+    public void TestTwoAtomAntecedent7() => PerformConversion("a --> a; b , c.", "a(A2, A0) :- a(A2, A0) ; b(A2, A1) , c(A1, A0)");
+
+    [TestMethod]
+    public void TestTwoAtomAntecedent5() => PerformConversion("a --> a, (b ; c).", "a(A2, A0) :- a(A2, A1) , (b(A1, A0) ; c(A1, A0))");
+
+    [TestMethod]
+    public void TestTwoAtomAntecedent6() => PerformConversion("a --> a, (b ; c, d).", "a(A3, A0) :- a(A3, A2) , (b(A2, A0) ; c(A2, A1), d(A1, A0))");
+
+    [TestMethod]
     public void TestFiveAtomAntecedent() => PerformConversion("a --> b, c, d, e, f.", "a(A5, A0) :- b(A5, A4) , c(A4, A3) , d(A3, A2) , e(A2, A1) , f(A1, A0)");
 
     [TestMethod]
-    public void TestSingleElementListAntecedent() => PerformConversion("a --> [xyz].", "a([xyz|A], A)");
+    public void TestSingleElementListAntecedent() => PerformConversion("a --> [xyz].", "a([xyz|A0], A0)");
+
+    [TestMethod]
+    public void TestConjunctionOfSingleElementListsAntecedent0() => PerformConversion("test1 --> [abc], [def].", "test1([abc,def|A0], A0)");
+
+    [TestMethod]
+    public void TestConjunctionOfSingleElementListsAntecedent1() => PerformConversion("test1 --> [abc]; [def].", "test1(A) :-> [abc|A] ; [def|A]");
 
     [TestMethod]
     public void TestConjunctionOfSingleElementListsAntecedent() => PerformConversion("test1 --> [a], [b], [c].", "test1([a,b,c|A0], A0)");
@@ -81,8 +105,8 @@ public class DefiniteClauseGrammerConvertorTest
     [TestMethod]
     public void TestSingleListAntecedent()
     {
-        PerformConversion("test(qwerty) --> [qwerty].", "test(qwerty, [qwerty|A], A)");
-        PerformConversion("test(qwerty) --> [x].", "test(qwerty, [x|A], A)");
+        PerformConversion("test(qwerty) --> [qwerty].", "test(qwerty, [qwerty|A0], A0)");
+        PerformConversion("test(qwerty) --> [x].", "test(qwerty, [x|A0], A0)");
     }
 
     private static void PerformConversion(string inputSyntax, string expectedOutputSyntax)

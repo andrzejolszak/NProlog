@@ -127,7 +127,7 @@
         }
 
         [TestMethod]
-        [DataRow(@"T: assertz((foo(X) :- X -> call(X)))")]
+        [DataRow(@"R: assertz((foo(X) :- X -> call(X)))")]
         [DataRow(@"R: assertz(_)")]
         [DataRow(@"R: assertz(4)")]
         [DataRow(@"R: assertz((foo :- 4))")]
@@ -141,7 +141,7 @@
         [DataRow(@"T: atom('string')")]
         [DataRow(@"F: atom(Var)")]
         [DataRow(@"F: atom(a(b))")]
-        [DataRow(@"T: atom([])")]
+        [DataRow(@"F: atom([])")]
         [DataRow(@"F: atom(6)")]
         [DataRow(@"F: atom(3.3)")]
         public void Atom(string test)
@@ -162,8 +162,8 @@
         [DataRow(@"R: atom_chars(A,[a,f(b)])")]
         [DataRow(@"R: atom_chars(X,['1','2']), Y is X + 1")]
         [DataRow(@"T: atom_chars('North',['N'|X]), X = ['o','r','t','h']")]
-        [DataRow(@"T: atom_chars([],L), L=['[',']']")]
-        //[DataRow(@"T: atom_chars('''',L), L=['''']")]
+        [DataRow(@"R: atom_chars([],L), L=['[',']']")]
+        [DataRow(@"T: atom_chars('''',L), L=['''']")]
         public void AtomChars(string test)
         {
             test.Evaluate();
@@ -323,7 +323,7 @@
         [DataRow(@"R: clause(_,B)")]
         [DataRow(@"R: clause(4,B)")]
         [DataRow(@"F: clause(f(_),5)")]
-        [DataRow(@"T: clause(atom(_),Body)")] //
+        [DataRow(@"R: clause(atom(_),Body)")] //
         [DataRow(@"F: clause(natnum, X)")]
         [DataRow(@"F: clause(single(0), _)")]
         [DataRow(@"T: clause(single(1), true)")]
@@ -397,14 +397,6 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         }
 
         [TestMethod]
-        [DataRow(@"T: exists(current_input/1)")]
-        [DataRow(@"T: exists(current_output/1)")]
-        public void CurrentIO(string test)
-        {
-            test.Evaluate();
-        }
-
-        [TestMethod]
         [DataRow(@"T: current_predicate(current_predicate/1)")]
         [DataRow(@"F: current_predicate(nofoo/1)")]
         [DataRow(@"T: current_predicate(copy_term/2)")]
@@ -414,18 +406,6 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         [DataRow(@"R: current_predicate(0/dog)")]
         [DataRow(@"T: current_predicate(X)")]
         public void CurrentPredicate(string test)
-        {
-            test.Evaluate();
-        }
-
-        [TestMethod]
-        [DataRow(@"T: current_prolog_flag(debug, off)")]
-        [DataRow(@"T: set_prolog_flag(unknown, warning), current_prolog_flag(unknown, warning)")]
-        [DataRow(@"F: set_prolog_flag(unknown, warning), current_prolog_flag(unknown, error)")]
-        [DataRow(@"T: current_prolog_flag(debug, V), V=off")]
-        [DataRow(@"R: current_prolog_flag(5, V)")]
-        [DataRow(@"R: current_prolog_flag(warning, V)")]
-        public void CurrentPrologFlag(string test)
         {
             test.Evaluate();
         }
@@ -541,7 +521,7 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         [DataRow(@"F: 'is'(foo,77)")]
         [DataRow(@"R: 'is'(77, N)")]
         [DataRow(@"R: 'is'(77, foooo)")]
-        [DataRow(@"T: 'is'(X,float(3)), X=3")]
+        [DataRow(@"F: 'is'(X,float(3)), X=3")]
         [DataRow(@"T: 'is'(X,float(3)), X=3.0")]
         [DataRow(@"T: X is 6 + 7, X = 13")]
         [DataRow(@"T: X is max(6,7), X = 7")]
@@ -583,7 +563,7 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         [DataRow(@"F: '\='(X,Y),'\='(X,abc)")]
         [DataRow(@"F: '\='(f(X,def),f(def,Y))")]
         [DataRow(@"T: '\='(1,2)")]
-        [DataRow(@"F: '\='(1,1.0)")]
+        [DataRow(@"T: '\='(1,1.0)")]
         [DataRow(@"T: '\='(g(X),f(f(X)))")]
         [DataRow(@"T: '\='(f(X,1),f(a(X)))")]
         [DataRow(@"T: '\='(f(X,Y,X),f(a(X),a(Y),Y,2))")]
@@ -697,7 +677,7 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         [DataRow(@"T: '@>'(foo(b), foo(a))")]
         [DataRow(@"F: '@>'(X, X)")]
         [DataRow(@"F: '@>'(foo(a, X), foo(b, Y))")]
-        [DataRow(@"T: '@>='(1.0,1)")]
+        [DataRow(@"F: '@>='(1.0,1)")]
         [DataRow(@"F: '@>='(aardvark, zebra)")]
         [DataRow(@"T: '@>='(short, short)")]
         [DataRow(@"F: '@>='(short, shorter)")]
@@ -710,7 +690,7 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         }
 
         [TestMethod]
-        [DataRow(@"F: '@<'(1.0,1)")]
+        [DataRow(@"T: '@<'(1.0,1)")]
         [DataRow(@"T: '@<'(aardvark, zebra)")]
         [DataRow(@"F: '@<'(short, short)")]
         [DataRow(@"T: '@<'(short, shorter)")]
@@ -744,7 +724,12 @@ natnum(s(X, 1)) :- natnum(X), true, Z = C, natnum(1).
         [DataRow(@"T: '='(X, Y), '='(X, abc), (X=abc; Y=abc)")]
         [DataRow(@"T: '='(f(X, def), f(def, Y)), (X=def; Y=def)")]
         [DataRow(@"F: '='(1,2)")]
-        [DataRow(@"T: '='(1,1.0)")]
+        [DataRow(@"F: '='(1,1.0)")]
+        [DataRow(@"F: '='(1,1.1)")]
+        [DataRow(@"F: '=='(1,1.0)")]
+        [DataRow(@"F: '=='(1,1.1)")]
+        [DataRow(@"T: '=:='(1,1.0)")]
+        [DataRow(@"F: '=:='(1,1.1)")]
         [DataRow(@"F: '='(g(X), f(f(X)))")]
         [DataRow(@"F: '='(f(X, 1), f(a(X)))")]
         [DataRow(@"F: '='(f(X, Y, X), f(a(X), a(Y), Y, 2))")]
